@@ -1,9 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+from database.database import get_db
 
 app = FastAPI()
 
 @app.get("/")
-def start():
+def start(db : Session = Depends(get_db)):
     
-    return {"message" : "Hello"}
+    stmt = select(1)
+    result = db.execute(stmt).scalar()
+    
+    return result
+
 
