@@ -1,12 +1,8 @@
+import database.init_db
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import select, text
 from database.database import get_db
-from database.database import Base, engine
-from model.user_model import User
-from model.task_model import Task
-
-Base.metadata.create_all(engine)
 
 app = FastAPI()
 
