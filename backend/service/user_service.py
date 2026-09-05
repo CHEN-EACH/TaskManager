@@ -2,7 +2,7 @@ from pwdlib import PasswordHash
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from schema.user_schema import UserCreate
+from schema.user_schema import UserCreate, UserLogin
 from model.user_model import User
 
 password_hash = PasswordHash.recommended()
@@ -34,5 +34,17 @@ def create_user(db : Session, user_data : UserCreate):
         
         raise ValueError("用户已存在")
     
+def verify_password(db:Session, user_data : UserLogin):
     
+    stmt = select(User).where(User.account == user_data.account)
+    user = db.execute(stmt).scalars().one_or_none()
+    if user is None:
+        
+        raise ValueError("用户名或密码错误")
+    
+    if not password_hash.verify(user_data.password,user.password_hash):
+       
+       raise ValueError("用户名或密码错误")
+    
+    return user
     

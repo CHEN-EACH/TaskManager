@@ -13,3 +13,8 @@ class UserResponse(BaseModel):
     nickname : str | None = None
     
     model_config = ConfigDict(from_attributes=True)
+    
+class UserLogin(BaseModel):
+    
+    account : str
+    password : str
